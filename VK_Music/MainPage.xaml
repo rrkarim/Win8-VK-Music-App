@@ -1,0 +1,236 @@
+﻿<Page
+    x:Class="VK_Music.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VK_Music"
+    xmlns:style="using:VK_Music.Styles"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Dictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <Grid x:Name="Main">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="#FF008298">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <Image Source="Assets/TopIcon.png" Height="60" HorizontalAlignment="Left" Margin="20,0"/>
+                <TextBlock Foreground="White" FontSize="30" Margin="0,10" Text="VK Музыка"/>
+            </StackPanel>
+                <SearchBox Grid.Column="1" VerticalAlignment="Top" SearchHistoryEnabled="False" HorizontalAlignment="Right" Margin="0,13,30,10" Width="250" QuerySubmitted="SearchBox_QuerySubmitted"/>
+          
+        </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid x:Name="Links_Grid" Background="#ebebeb">
+                    <Grid Margin="10,10,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <ProgressRing x:Name="prograss_u_h" Foreground="White" Grid.Row="0" Height="40" Width="40" IsActive="True"/>
+                        <Grid x:Name="user_header" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal" Margin="15,15,15,0">
+                                <Image Margin="0,5" x:Name="photo_mediumx" Stretch="UniformToFill" Height="60" Width="60" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Vertical" Margin="5,0">
+                                    <TextBlock x:Name="full_namex" FontSize="21"/>
+                                    <TextBlock x:Name="Audio_Count"/>
+                                <Button BorderThickness="0" Click="Exit_Click" Padding="0" FontSize="17" Content="Выход"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <!--<Button Grid.Column="2" Content="Мои Аудиозаписи" Click="Button_Click_1"/>-->
+                        </Grid>
+                        <StackPanel Grid.Row="1">
+                            <ComboBox x:Name="FontsCombo" Style="{StaticResource ComboBox_Left}" SelectionChanged="FontsCombo_SelectionChanged" Margin="10" ItemsSource="{Binding ListItems_Pop}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        <Grid Height="5">
+                            <ProgressBar Foreground="White" x:Name="progress_links" Visibility="Collapsed" IsIndeterminate="True"/>
+                        </Grid>
+                            
+                        </StackPanel>
+                        
+                        <ListBox x:Name="my_list" ItemsSource="{Binding ListItems}" Visibility="Collapsed" SelectionChanged="my_list_SelectionChanged" Margin="0,-10,0,0" Grid.Row="2" Padding="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="6">
+                                        <StackPanel Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding Name}" MaxHeight="40"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <ListBox x:Name="group_fr" SelectionChanged="group_fr_SelectionChanged" Visibility="Collapsed" Grid.Row="2" Margin="0,0,0,0" Padding="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
+                                            <Image Source="{Binding Photo}" Stretch="UniformToFill"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding Name}" MaxHeight="40"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <ListBox x:Name="friends_fr" SelectionChanged="friends_fr_SelectionChanged" Visibility="Collapsed" Grid.Row="2" Margin="0,0,0,0" Padding="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
+                                            <Image Source="{Binding Photo}" Stretch="UniformToFill"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding Name}" MaxHeight="40"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                    </Grid>
+                </Grid>
+            <Grid Grid.Column="1" Background="White">
+                    <ProgressBar Foreground="White" x:Name="progress_music" Visibility="Collapsed" IsIndeterminate="True" VerticalAlignment="Top"/>
+                    <TextBlock Text="Нет Песен" x:Name="empty_audio" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="56" Visibility="Collapsed"/>
+                  <GridView x:Name="incrementalData" SelectionChanged="incrementalData_SelectionChanged" Padding="10,30,10,0" SelectionMode="Single" IsItemClickEnabled="False">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6" Width="250">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding title}" MaxHeight="40"/>
+                                    <TextBlock Text="{Binding artist}" MaxHeight="40"/>
+                                </StackPanel>
+                                <!--<TextBlock Text="{Binding duration_T}" Grid.Column="1" MaxHeight="20"/>-->
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
+            <MediaElement x:Name="media" CurrentStateChanged="media_CurrentStateChanged" MediaOpened="media_MediaOpened" AudioCategory="BackgroundCapableMedia" MediaEnded="media_MediaEnded" AutoPlay="True"/>
+        </Grid>
+        </Grid>
+        <Grid x:Name="Snapped_"  Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <SearchBox SearchHistoryEnabled="False" VerticalAlignment="Top" QuerySubmitted="SearchBox_QuerySubmitted"/>
+
+            <Grid Grid.Row="1" Background="White">
+                <ListView x:Name="incrementalData_s" SelectionChanged="incrementalData_s_SelectionChanged" Padding="10,30,10,0" SelectionMode="Single" IsItemClickEnabled="False">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6" Width="250">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding title}" MaxHeight="40"/>
+                                    <TextBlock Text="{Binding artist}" MaxHeight="40"/>
+                                </StackPanel>
+                                <!--<TextBlock Text="{Binding duration_T}" Grid.Column="1" MaxHeight="20"/>-->
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            
+            <Grid Grid.Row="2" Background="#FF008298">
+            <StackPanel Orientation="Vertical" Margin="10,40">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Image x:Name="Audio_Image_S" Source="Assets/Logo.scale-100.png"  Width="70" Height="70" Stretch="UniformToFill" Margin="5"/>
+                    <StackPanel Margin="5" >
+                        <TextBlock x:Name="Audio_Name_S" Text="Название" FontSize="16"/>
+                        <TextBlock x:Name="Artist_Name_S" Text="Артист" FontSize="14"/>
+                        <TextBlock x:Name="Position_Name_S" Visibility="Collapsed" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="Position_S" FontSize="12"/>
+                            <TextBlock x:Name="Position_C_S" FontSize="12"/>
+                            <TextBlock x:Name="Position_Full_S" FontSize="12"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                    <Slider x:Name="timeSlider_s" Margin="2" IsThumbToolTipEnabled="False" Style="{StaticResource Player_Slider}" HorizontalAlignment="Stretch" Height="29" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button HorizontalAlignment="Center" Click="BackButtonClick" Style="{StaticResource PrevButtonStyle}" Margin="2"/>
+                    <ToggleButton HorizontalAlignment="Center" Unchecked="PlayButton_Unchecked" Checked="PlayButton_Checked" x:Name="PlayButton_S" Style="{StaticResource ToggleButton_Play}" Margin="2"/>
+                    <Button HorizontalAlignment="Center" Click="SkipButtonClick" Style="{StaticResource NextButtonStyle}" Margin="2"/>
+                </StackPanel>
+            </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+    
+    <Page.BottomAppBar>
+        <AppBar x:Name="Bottom" Background="#FF008298">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top" x:Name="MediaPlayerButtons">
+                <Slider x:Name="timeSlider" Margin="10,-10" IsThumbToolTipEnabled="False" Style="{StaticResource Player_Slider}" HorizontalAlignment="Stretch" Height="29"/>
+                <Grid Margin="10,10,10,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0.05*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top">
+                        <Image x:Name="Audio_Image" Width="70" Height="70" Stretch="UniformToFill" Margin="5"/>
+                        <StackPanel Margin="5" >
+                            <TextBlock x:Name="Audio_Name" FontSize="16"/>
+                            <TextBlock x:Name="Artist_Name"  FontSize="14"/>
+                            <TextBlock x:Name="Position_Name" Visibility="Collapsed" FontSize="12"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="Position" FontSize="12"/>
+                                <TextBlock x:Name="Position_C" FontSize="12"/>
+                                <TextBlock x:Name="Position_Full" FontSize="12"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button HorizontalAlignment="Center" Click="BackButtonClick" x:Name="BackButton" Style="{StaticResource PrevButtonStyle}" Margin="2"/>
+                        <ToggleButton HorizontalAlignment="Center" Unchecked="PlayButton_Unchecked" Checked="PlayButton_Checked" x:Name="PlayButton" Style="{StaticResource ToggleButton_Play}" Margin="2"/>
+                        <Button HorizontalAlignment="Center" Click="SkipButtonClick" x:Name="SkipButton" Style="{StaticResource NextButtonStyle}" Margin="2"/>
+                    </StackPanel>
+                </Grid>
+                </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
+</Page>
