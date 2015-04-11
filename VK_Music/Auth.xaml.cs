@@ -28,6 +28,7 @@ namespace VK_Music
             this.InitializeComponent();
             auth();
         }
+
         async private void auth()
         {
             var VkUrl = "https://oauth.vk.com/authorize?client_id=" + client_id + "&scope=" + scope + "&redirect_uri=http://oauth.vk.com/blank.html&display=touch&response_type=token";
