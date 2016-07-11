@@ -521,7 +521,9 @@ namespace VK_Music
                     incrementalData_s.SelectedIndex = (int)media.Tag + 1;
                 }
             }
-            catch { }
+            catch(Exception ex) {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private async void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
