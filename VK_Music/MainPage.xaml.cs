@@ -385,7 +385,9 @@ namespace VK_Music
                         incrementalData_s.ItemsSource = new IncrementalSource<RootObject, Item>(datasourceUrl, RootObjectResponse);
                 
                     }
-                    catch { }
+                    catch(Exception ex) {
+                        Console.WriteLine(ex.ToString());
+                    }
                 }
                 else
                 {
@@ -423,12 +425,13 @@ namespace VK_Music
                 Audio_Name_S.Text = selected_u.title;
                 Artist_Name_S.Text = selected_u.artist;
                 _Album(selected_u.artist, selected_u.title);
-                //Controls_Update();
                 MediaControl.TrackName = selected_u.title;
                 MediaControl.ArtistName = selected_u.artist;
                 
             }
-            catch { }
+            catch(Exception ex) {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private void incrementalData_s_SelectionChanged(object sender, SelectionChangedEventArgs e)
