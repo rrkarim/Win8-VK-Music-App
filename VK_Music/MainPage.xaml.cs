@@ -77,9 +77,7 @@ namespace VK_Music
 
             bool internet_bool = IsInternet();
 
-
             Window.Current.SizeChanged += WindowSizeChanged;
-
             MediaControl.PlayPressed += MediaControl_PlayPressed;
             MediaControl.PausePressed += MediaControl_PausePressed;
             MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
@@ -97,16 +95,14 @@ namespace VK_Music
                 {
                     this.Frame.Navigate(typeof(Auth));
                 }
-                access_token = "" + value + "";
+                access_token = value.ToString();
                 //
                 FontsCombo.DataContext = new Me_ListViewModel_Pop();
                 FontsCombo.SelectedIndex = 0;
                 //
                 my_list.DataContext = new Me_ListViewModel();
                 Player();
-
                 Get();
-
 
             }
             else { Exit(); }
@@ -146,7 +142,6 @@ namespace VK_Music
             timeSlider.SetBinding(ProgressBar.ValueProperty, progressBarBinding);
 
             timeSlider_s.SetBinding(ProgressBar.ValueProperty, progressBarBinding);
-
 
             Binding progr = new Binding();
             progr.Path = new PropertyPath("DownloadProgress");
