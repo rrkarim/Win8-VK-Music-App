@@ -308,7 +308,9 @@ namespace VK_Music
             var selected_g = group_fr.SelectedValue as Group;
 
             try { GetAudio(selected_g.Gid, "gid", true, "audio.get"); }
-            catch { }
+            catch(Exception ex) { 
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private void friends_fr_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -317,6 +319,7 @@ namespace VK_Music
             try { GetAudio(selected_u.uid, "uid", true, "audio.get"); }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -547,7 +550,9 @@ namespace VK_Music
              
                     incrementalData.ItemsSource = new IncrementalSource<RootObject, Item>(datasourceUrl, RootObjectResponse);
                 }
-                catch { }
+                catch(Exception ex) {
+                    Console.WriteLine(ex.ToString());
+                }
             }
             else
             {
