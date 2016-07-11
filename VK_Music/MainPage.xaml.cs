@@ -51,9 +51,7 @@ namespace VK_Music
             try
             {
                 int SliderValue = System.Convert.ToInt32((double)value);
-
                 TimeSpan ts = new TimeSpan(0, 0, 0, SliderValue, 0);
-
                 return ts;
             }
             catch
@@ -95,7 +93,7 @@ namespace VK_Music
                 {
                     this.Frame.Navigate(typeof(Auth));
                 }
-                access_token = value.ToString();
+                access_token = value.ToString(); // the error may be here
                 //
                 FontsCombo.DataContext = new Me_ListViewModel_Pop();
                 FontsCombo.SelectedIndex = 0;
@@ -201,17 +199,13 @@ namespace VK_Music
                 {
                     Application.Current.Exit();
                 })));
-
-
-
             await dlg.ShowAsync();
         }
 
         public static bool IsInternet()
         {
             ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
-            bool internet = connections != null && connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
-            return internet;
+            return (connections != null && connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
         }
 
         private void FontsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
