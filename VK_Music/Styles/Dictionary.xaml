@@ -72,7 +72,7 @@
                                         <DoubleAnimation Storyboard.TargetName="Icon"
                                                      Storyboard.TargetProperty="Opacity"
                                                      To="0"
-                                                     Duration="0" />
+                                                     Duration="1" />
                                         <DoubleAnimation Storyboard.TargetName="Icon_Pause"
                                                      Storyboard.TargetProperty="Opacity"
                                                      To="1"
