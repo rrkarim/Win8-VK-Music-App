@@ -449,7 +449,9 @@ namespace VK_Music
                 MediaControl.ArtistName = selected_u.artist;
 
             }
-            catch { }
+            catch(Exception ex) { 
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private void media_MediaOpened(object sender, RoutedEventArgs e)
@@ -505,7 +507,9 @@ namespace VK_Music
                     incrementalData_s.SelectedIndex = (int)media.Tag - 1;
                 }
             }
-            catch { }
+            catch(Exception ex) {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private void SkipButtonClick(object sender, RoutedEventArgs e)
