@@ -1,4 +1,7 @@
-﻿using IncrementalLoading;
+﻿/*
+    fix: application written in one file, so it strongly needs refactoring 
+*/
+using IncrementalLoading;
 using IncrementalLoading.Code;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,37 +37,27 @@ namespace VK_Music
     {
         public object Convert(object value, Type targetType, object parametr, string str)
         {
-            try
-            {
+            try {
                 var time = (TimeSpan)value;
-
                 return System.Convert.ToDouble(time.TotalSeconds);
             }
-            catch
-            {
-                return null;
-            }
+            catch { Console.WriteLine("Error in TimespanToDouble::Convert"); return null; }
         }
-
         public object ConvertBack(object value, Type targetType, object parametr, string str)
         {
-            try
-            {
+            try {
                 int SliderValue = System.Convert.ToInt32((double)value);
                 TimeSpan ts = new TimeSpan(0, 0, 0, SliderValue, 0);
                 return ts;
             }
-            catch
-            {
-                return null;
-            }
+            catch { Console.WriteLine("Error in TimespanToDouble::ConvertBack"); return null; }
         }
     }
 
     public sealed partial class MainPage : Page
     {
-        private static string access_token = null;
-        private static int i_or_ni = 0;
+        private static string access_token = null; // VK access_token
+        private static int i_or_ni = 0; // flag to render the audio
 
         HttpClient client = new HttpClient();
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -72,9 +65,8 @@ namespace VK_Music
         public MainPage()
         {
             this.InitializeComponent();
-
             bool internet_bool = IsInternet();
-
+            // Media Controllers // fix and refactor
             Window.Current.SizeChanged += WindowSizeChanged;
             MediaControl.PlayPressed += MediaControl_PlayPressed;
             MediaControl.PausePressed += MediaControl_PausePressed;
@@ -82,28 +74,19 @@ namespace VK_Music
             MediaControl.StopPressed += MediaControl_StopPressed;
             MediaControl.NextTrackPressed += MediaControl_NextTrackPressed;
             MediaControl.PreviousTrackPressed += MediaControl_NextTrackPressed;
+            /**/
 
-
-
-            if (internet_bool)
-            {
+            if (internet_bool) { // if there is internet 
                 Object value = localSettings.Values["_token"];
-
-                if (value == null)
-                {
-                    this.Frame.Navigate(typeof(Auth));
-                }
+                if (value == null) { this.Frame.Navigate(typeof(Auth)); } // if there is no value we have authorize app
                 access_token = value.ToString(); // the error may be here
-                //
                 FontsCombo.DataContext = new Me_ListViewModel_Pop();
                 FontsCombo.SelectedIndex = 0;
-                //
                 my_list.DataContext = new Me_ListViewModel();
-                Player();
+                Player(); // open player
                 Get();
-
             }
-            else { Exit(); }
+            else { Exit(); } // exit? maybe there is more elegant way.
 
 
         }
@@ -112,33 +95,28 @@ namespace VK_Music
             base.OnNavigatedTo(e);
             Window.Current.SizeChanged += WindowSizeChanged;
         }
-
         private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
             var WindowWidth = Window.Current.Bounds.Width;
-            if (WindowWidth < 500)
-            {
+            if (WindowWidth < 500) {
                 Main.Visibility = Visibility.Collapsed;
                 Snapped_.Visibility = Visibility.Visible;
                 Bottom.Visibility = Visibility.Collapsed;
             }
-            else
-            {
+            else {
                 Bottom.Visibility = Visibility.Visible;
                 Main.Visibility = Visibility.Visible;
                 Snapped_.Visibility = Visibility.Collapsed;
             }
         }
-
         private void Player()
         {
-            Binding progressBarBinding = new Binding();
+            Binding progressBarBinding = new Binding(); // audio downloading progressbar
             progressBarBinding.Path = new PropertyPath("Position");
             progressBarBinding.Source = media;
             progressBarBinding.Converter = new TimespanToDouble();
             progressBarBinding.Mode = BindingMode.TwoWay;
             timeSlider.SetBinding(ProgressBar.ValueProperty, progressBarBinding);
-
             timeSlider_s.SetBinding(ProgressBar.ValueProperty, progressBarBinding);
 
             Binding progr = new Binding();
@@ -147,19 +125,16 @@ namespace VK_Music
             progr.Mode = BindingMode.TwoWay;
             timeSlider.SetBinding(ProgressBar.TagProperty, progr);
         }
-
         public void Get()
         {
-            GetProfile();
-            my_list.SelectedIndex = 0;
+            GetProfile(); // get profile references like: friends, groups
+            my_list.SelectedIndex = 0; // initially nothing is seleced
         }
-
         public async void GetProfile()
         {
             string data = await client.GetStringAsync("https://api.vkontakte.ru/method/users.get?fields=uid,%20first_name,%20last_name,%20nickname,%20screen_name,%20photo,%20photo_medium,%20photo_big&access_token=" + access_token + "&v=5.2");
-            JObject o = JObject.Parse(data);
-            try
-            {
+            JObject o = JObject.Parse(data); // parse json
+            try {
                 int uid = (int)o["response"][0]["id"];
                 string first_name = "" + o["response"][0]["first_name"] + "";
                 string last_name = "" + o["response"][0]["last_name"] + "";
@@ -169,18 +144,15 @@ namespace VK_Music
                 full_namex.Text = full_name;
                 prograss_u_h.Visibility = Visibility.Collapsed;
                 user_header.Visibility = Visibility.Visible;
-                if (!localSettings.Values.ContainsKey("_id"))
-                {
+                if (!localSettings.Values.ContainsKey("_id")) {
                     localSettings.Values["_id"] = uid + "";
                     localSettings.Values["_name"] = first_name + " " + last_name;
                     localSettings.Values["_photo_medium"] = "" + photo_medium + "";
                 }
             }
-            catch
-            {
+            catch {
                 int error_code = (int)o["error"]["error_code"];
-                if (error_code == 17)
-                {
+                if (error_code == 17) {
                     string redirect_uri = "" + o["error"]["redirect_uri"] + "";
                     localSettings.Values.Remove("_token");
                     localSettings.Values.Remove("_id");
@@ -190,8 +162,7 @@ namespace VK_Music
                 }
             }
         }
-
-        private async void Exit()
+        private async void Exit() // exip app
         {
             var dlg = new MessageDialog("Не удается подключиться к сети!");
             dlg.Commands.Add(new UICommand("Выход",

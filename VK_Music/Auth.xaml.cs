@@ -14,33 +14,29 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-
 namespace VK_Music
 {
     public sealed partial class Auth : Page
     {
         #region Parametrs
-        int client_id = 3870627;
-        int scope = 327690;
+        const int client_id = 3870627;
+        const int scope = 327690;
         #endregion
         public Auth()
         {
             this.InitializeComponent();
             auth();
         }
-
         async private void auth()
         {
             var VkUrl = "https://oauth.vk.com/authorize?client_id=" + client_id + "&scope=" + scope + "&redirect_uri=http://oauth.vk.com/blank.html&display=touch&response_type=token";
             var requestUri = new Uri(VkUrl);
             var callbackUri = new Uri("http://oauth.vk.com/blank.html");
-
             WebAuthenticationResult webAuthResult = await WebAuthenticationBroker.AuthenticateAsync(
                                                     WebAuthenticationOptions.None,
                                                     requestUri,
                                                     callbackUri);
-            if (webAuthResult.ResponseStatus == WebAuthenticationStatus.Success)
-            {
+            if (webAuthResult.ResponseStatus == WebAuthenticationStatus.Success) {
                 var responseString = webAuthResult.ResponseData.ToString();
                 char[] separators = { '=', '&' };
                 string[] responseContent = responseString.Split(separators);
@@ -49,9 +45,7 @@ namespace VK_Music
                 Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
                 localSettings.Values["_token"] = "" + AccessToken + "";
                 this.Frame.Navigate(typeof(MainPage), AccessToken);
-
             }
-
         }
     }
 }
