@@ -1,5 +1,5 @@
 # Win8-VK-Music-App
-VK music application based on C#.
+VK desktop music application.
 
 Ссылка: [Marketplace](https://www.microsoft.com/ru-ru/store/p/vk-%D0%9C%D1%83%D0%B7%D1%8B%D0%BA%D0%B0/9wzdncrdkrh1)
 
